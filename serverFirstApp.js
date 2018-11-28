@@ -33,7 +33,35 @@ const server = http.createServer((req, res) => {
     // process.exit();
 
     if(url === '/message' && method === 'POST'){
-        fs.writeFileSync('message.txt', 'DUMMY');
+        const body = [];
+        // This is a utility method in node js where we use buffer to parse data chunk
+
+        // request on a data listener( sending data as chunk or small portion) 
+        //and a function declared inside the req to process some 
+        //operation on the data chunk it getting
+        req.on('data', (chunk) => {
+            // Making some console to check the data chunk
+            console.log(chunk);
+            // Push the data chunk to the body array
+            body.push();
+        });
+        // Request on end listener when its done parsing the incoming 
+        //request data or the incoming requests and define a function 
+        //which will buffer all the data chunk that stored on the body
+        req.on('end', () => {
+            const parsedBody = Buffer.concat(body).toString();
+
+            // Make some output of the parsed body
+           // console.log(parsedBody);
+
+            const message = parsedBody.split('=')[1];
+            fs.writeFile('message.txt', message, (err) => {
+                res.statusCode = 302;
+                res.writeHeader('Location', '/');
+                return res.end();
+            });
+        });
+
     }
     // Sending response ( Setting default header)
     res.setHeader('Content-Type', 'text/html');
