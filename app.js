@@ -8,7 +8,7 @@ const shopRoutes = require('./routes/shop');
 
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use(adminRoutes);
+app.use('/admin',adminRoutes); // admin is used for filtering paths
 app.use(shopRoutes);
 
 // Adding 404 error page
